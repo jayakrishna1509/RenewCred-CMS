@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: renewcred-backend
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
+  admin:
+    build: ./admin
+    container_name: renewcred-admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  website:
+    build: ./website
+    container_name: renewcred-website
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
